@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dice Guess Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f2f2f2;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #game {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type=number] {
+      width: 60px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .score {
+      margin: 15px 0;
+    }
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h1>Dice Guess Game</h1>
+    <p>Guess the number (1-6):</p>
+    <input type="number" id="guess" min="1" max="6">
+    <br>
+    <button onclick="playRound()">Roll Dice</button>
+
+    <div class="score">
+      <p>Your Score: <span id="playerScore">0</span></p>
+      <p>Computer Score: <span id="computerScore">0</span></p>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    let playerScore = 0;
+    let computerScore = 0;
+
+    function playRound() {
+      const guessInput = document.getElementById('guess');
+      const guess = parseInt(guessInput.value);
+
+      if (isNaN(guess) || guess < 1 || guess > 6) {
+        alert('Please enter a number between 1 and 6.');
+        return;
+      }
+
+      const roll = Math.floor(Math.random() * 6) + 1;
+      let message = `The dice rolled: ${roll}. `;
+
+      if (guess === roll) {
+        playerScore++;
+        message += "You guessed it! +1 point.";
+      } else {
+        computerScore++;
+        message += "Wrong guess. Computer gets the point.";
+      }
+
+      document.getElementById('playerScore').textContent = playerScore;
+      document.getElementById('computerScore').textContent = computerScore;
+      document.getElementById('message').textContent = message;
+
+      if (playerScore === 5 || computerScore === 5) {
+        setTimeout(() => {
+          alert(playerScore === 5 ? "You win the game!" : "Computer wins the game!");
+          resetGame();
+        }, 100);
+      }
+    }
+
+    function resetGame() {
+      playerScore = 0;
+      computerScore = 0;
+      document.getElementById('playerScore').textContent = playerScore;
+      document.getElementById('computerScore').textContent = computerScore;
+      document.getElementById('message').textContent = "";
+      document.getElementById('guess').value = "";
+    }
+  </script>
+</body>
+</html>
